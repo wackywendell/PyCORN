@@ -82,4 +82,5 @@ for fname in args.inp_res:
         outputpath = path.with_name('{}-{}.{}'.format(
                     path.stem, name, args.ext))
         plt.savefig(str(outputpath), bbox_inches='tight', dpi=args.dpi)
+        plt.close()
         print(outputpath)

@@ -87,7 +87,7 @@ for fname in args.inp_res:
     for name in 'general', 'sizeex':
         if args.fractions:
             fig = plt.figure(figsize=(8, 6)) 
-            gs1, gs2 = gridspec.GridSpec(2, 1, height_ratios=[9, 1], hspace=0) 
+            gs1, gs2 = gridspec.GridSpec(2, 1, height_ratios=[19, 1], hspace=0) 
             ax = plt.subplot(gs1)
             ax_fracs = plt.subplot(gs2, sharex=ax)
         else:
@@ -120,10 +120,18 @@ for fname in args.inp_res:
         ax2.set_ylim(args.ymin2, ymax2)
         
         if args.fractions:
+            frac_font_size = 8
+            if len(frac_data) < 20:
+                frac_font_size = 12
             for (x, fracname), delta in zip(frac_data, frac_delta):
+                try:
+                    _ = int(fracname)
+                except ValueError:
+                    fracname = ''
+                
                 ax_fracs.axvline(x=x, color='r', linewidth=0.85)
-                ax_fracs.annotate(str(fracname), xy=(x + delta * 0.55, 0.1),
-                         horizontalalignment='center', verticalalignment='bottom', size=8, rotation=90)
+                ax_fracs.annotate(str(fracname), xy=(x + delta * 0.6, 0.1),
+                         horizontalalignment='center', verticalalignment='bottom', size=frac_font_size, rotation=90)
             ax_fracs.set_ylim(0, 1)
             ax_fracs.set_yticks([])
             plt.setp(ax.get_xticklabels(), visible=False)

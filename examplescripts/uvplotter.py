@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 dr = 'PyCORN'
 if dr not in sys.path: sys.path.append(dr)
-from pycorn import Pycorn
+from pycorn import pc_res3
 
 blue = '#377EB8'
 green = '#4DAF4A'
@@ -38,7 +38,7 @@ args = parser.parse_args()
 
 for fname in args.inp_res:
     path = Path(fname)
-    pc = Pycorn(fname)
+    pc = pc_res3(fname)
     pc.load()
     UVx, UV = np.array(pc['UV']['data']).T
     ix = np.isfinite(UVx)

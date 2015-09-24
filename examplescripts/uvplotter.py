@@ -38,6 +38,12 @@ parser.add_argument("--no_fractions",
                     dest="fractions",
                     help="Disable plotting of fractions",
                     action = "store_false")
+parser.add_argument("--frac_cutoff",
+                    dest="frac_cutoff",
+                    help="The ratio at which fractions are considered too"
+                    "small to plot the number for. Should be between 0 and 1.",
+                    type=float,
+                    default=0.6)
 
 args = parser.parse_args()
 
@@ -123,13 +129,18 @@ for fname in args.inp_res:
             frac_font_size = 8
             if len(frac_data) < 20:
                 frac_font_size = 12
+            
+            frac_delta_median = np.median(frac_delta)
             for (x, fracname), delta in zip(frac_data, frac_delta):
                 try:
                     _ = int(fracname)
                 except ValueError:
                     fracname = ''
-                
+                    
                 ax_fracs.axvline(x=x, color='r', linewidth=0.85)
+                
+                if delta < args.frac_cutoff * frac_delta_median:
+                    continue
                 ax_fracs.annotate(str(fracname), xy=(x + delta * 0.6, 0.1),
                          horizontalalignment='center', verticalalignment='bottom', size=frac_font_size, rotation=90)
             ax_fracs.set_ylim(0, 1)
